@@ -79,6 +79,8 @@ def get_nested_value(d, key):
         will return: 2
     
     """
+    if d is None:
+        return None
     if '.' not in key:
         if key not in d:
             return None
