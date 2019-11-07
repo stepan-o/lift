@@ -102,21 +102,21 @@ def db_insert_json(conn, cur, json_path, target_table, batch_size=100):
                 row += 1
                 line_json = json.loads(line)
                 line_df = json_normalize(line_json)
-                json_df = json_df.append(line_df)
+                json_df = json_df.append(line_df, sort=True)
                 if len(json_df) == batch_size:
                     json_df = json_df.fillna('NULL').replace('None', 'NULL')
                     json_tuple = [tuple(x) for x in json_df.values]
                     insert_query_string = 'INSERT INTO {0} ( '.format(target_table)
                     i = 0
-                    for col in line_df.columns:
+                    for col in json_df.columns:
                         if '.' in col:
                             col = '"' + col + '"'
                             insert_query_string = insert_query_string + col
                             i += 1
-                            if i < len(line_df.columns):
+                            if i < len(json_df.columns):
                                 insert_query_string = insert_query_string + ', '
                     insert_query_string = insert_query_string + ' ) VALUES ({0})'\
-                        .format(','.join(['%s'] * len(line_df.columns)))
+                        .format(','.join(['%s'] * len(json_df.columns)))
                     cur.executemany(insert_query_string, json_tuple)
                     json_df = pd.DataFrame()
 
