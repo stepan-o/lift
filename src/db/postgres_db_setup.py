@@ -85,7 +85,7 @@ def db_copy_from(conn, cur, file_path, target_table, header=True, sep=',', null=
         print("{0} Changes rolled back\n".format('-' * 15))
 
 
-def db_insert_json(conn, cur, json_path, target_table):
+def db_insert_json(conn, cur, json_path, target_table, batch_size=100):
     try:
         # copy data from file into the table
         print("-- Insert data into '{0}' table from file {1}...".format(target_table, json_path))
@@ -93,6 +93,7 @@ def db_insert_json(conn, cur, json_path, target_table):
         with open(json_path, 'r') as f_in:
             lines = f_in.readlines()
             row = 0
+            json_df = pd.DataFrame()
             for line in lines:
                 if row % 10000 == 0:
                     elpsd = time() - t
@@ -101,19 +102,23 @@ def db_insert_json(conn, cur, json_path, target_table):
                 row += 1
                 line_json = json.loads(line)
                 line_df = json_normalize(line_json)
-                line_df = line_df.fillna('NULL').replace('None', 'NULL')
-                insert_query_string = 'INSERT INTO {0} ( '.format(target_table)
-                i = 0
-                for col in line_df.columns:
-                    if '.' in col:
-                        col = '"' + col + '"'
-                    insert_query_string = insert_query_string + col
-                    i += 1
-                    if i < len(line_df.columns):
-                        insert_query_string = insert_query_string + ', '
-                insert_query_string = insert_query_string + ' ) VALUES ({0})' \
-                    .format(','.join(['%s'] * len(line_df.columns)))
-                cur.execute(insert_query_string, tuple(line_df.values[0]))
+                json_df = json_df.append(line_df)
+                if len(json_df) == batch_size:
+                    json_df = json_df.fillna('NULL').replace('None', 'NULL')
+                    json_tuple = [tuple(x) for x in json_df.values]
+                    insert_query_string = 'INSERT INTO {0} ( '.format(target_table)
+                    i = 0
+                    for col in line_df.columns:
+                        if '.' in col:
+                            col = '"' + col + '"'
+                            insert_query_string = insert_query_string + col
+                            i += 1
+                            if i < len(line_df.columns):
+                                insert_query_string = insert_query_string + ', '
+                    insert_query_string = insert_query_string + ' ) VALUES ({0})'\
+                        .format(','.join(['%s'] * len(line_df.columns)))
+                    cur.executemany(insert_query_string, json_tuple)
+                    json_df = pd.DataFrame()
 
         elapsed = time() - t
         # persist changes to the database
