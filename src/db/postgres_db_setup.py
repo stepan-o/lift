@@ -137,17 +137,18 @@ def db_insert_json(conn, cur, json_path, target_table, batch_size):
         print("{0} Changes rolled back\n".format('-' * 15))
 
 
-def db_setup(connection_params, ddl_queries=None, ingest_list=None, batch_size=10000):
+def db_setup(connection_params, ddl_queries=None, ingest_list=None):
     print("------ Connecting to database '{0}'...".format(connection_params['database']))
     tt = time()
     with psycopg2.connect(**connection_params) as conn:
         with conn.cursor() as cur:
             conn.autocommit = False
             db_check_connection(conn, cur)
+            batch_size = input("Specify batch size (integer) for json INSERT : ")
             if ddl_queries:
                 print("------ Executing DDL queries")
                 db_execute_queries(conn, cur, ddl_queries)
-                print("All DDL queries executed")
+                print("All DDL queries executed\n")
             else:
                 print("------ No DDL queries to execute")
             if ingest_list:
