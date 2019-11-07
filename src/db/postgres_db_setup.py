@@ -85,7 +85,7 @@ def db_copy_from(conn, cur, file_path, target_table, header=True, sep=',', null=
         print("{0} Changes rolled back\n".format('-' * 15))
 
 
-def db_insert_json(conn, cur, json_path, target_table, batch_size=100):
+def db_insert_json(conn, cur, json_path, target_table, batch_size):
     try:
         # copy data from file into the table
         print("-- Insert data into '{0}' table from file {1}...".format(target_table, json_path))
@@ -136,7 +136,7 @@ def db_insert_json(conn, cur, json_path, target_table, batch_size=100):
         print("{0} Changes rolled back\n".format('-' * 15))
 
 
-def db_setup(connection_params, ddl_queries=None, ingest_list=None):
+def db_setup(connection_params, ddl_queries=None, ingest_list=None, batch_size=10000):
     print("------ Connecting to database '{0}'...".format(connection_params['database']))
     tt = time()
     with psycopg2.connect(**connection_params) as conn:
@@ -150,10 +150,10 @@ def db_setup(connection_params, ddl_queries=None, ingest_list=None):
             else:
                 print("------ No DDL queries to execute")
             if ingest_list:
-                print("------ Executing DML queries. {0} sources provided for ingestion"
-                      .format(len(ingest_list)))
+                print("------ Executing DML queries. {0} sources provided for ingestion, batch size = {1}"
+                      .format(len(ingest_list), batch_size))
                 for source in ingest_list:
-                    db_insert_json(conn, cur, source['file_path'], source['target_table'])
+                    db_insert_json(conn, cur, source['file_path'], source['target_table'], batch_size=batch_size)
 
     # close connection to the database
     if cur:
