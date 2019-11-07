@@ -111,10 +111,10 @@ def db_insert_json(conn, cur, json_path, target_table, batch_size=100):
                     for col in json_df.columns:
                         if '.' in col:
                             col = '"' + col + '"'
-                            insert_query_string = insert_query_string + col
-                            i += 1
-                            if i < len(json_df.columns):
-                                insert_query_string = insert_query_string + ', '
+                        insert_query_string = insert_query_string + col
+                        i += 1
+                        if i < len(json_df.columns):
+                            insert_query_string = insert_query_string + ', '
                     insert_query_string = insert_query_string + ' ) VALUES ({0})'\
                         .format(','.join(['%s'] * len(json_df.columns)))
                     cur.executemany(insert_query_string, json_tuple)
