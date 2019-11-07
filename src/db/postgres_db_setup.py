@@ -144,7 +144,7 @@ def db_setup(connection_params, ddl_queries=None, ingest_list=None):
         with conn.cursor() as cur:
             conn.autocommit = False
             db_check_connection(conn, cur)
-            batch_size = input("Specify batch size (integer) for json INSERT : ")
+            batch_size = int(input("Specify batch size (integer) for json INSERT : "))
             if ddl_queries:
                 print("------ Executing DDL queries")
                 db_execute_queries(conn, cur, ddl_queries)
