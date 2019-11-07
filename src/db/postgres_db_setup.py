@@ -88,7 +88,8 @@ def db_copy_from(conn, cur, file_path, target_table, header=True, sep=',', null=
 def db_insert_json(conn, cur, json_path, target_table, batch_size):
     try:
         # copy data from file into the table
-        print("-- Insert data into '{0}' table from file {1}...".format(target_table, json_path))
+        print("-- Insert data into '{0}' table from file {1}, batch size = {2:,}..."
+              .format(target_table, json_path, batch_size))
         t = time()
         with open(json_path, 'r') as f_in:
             lines = f_in.readlines()
@@ -150,8 +151,8 @@ def db_setup(connection_params, ddl_queries=None, ingest_list=None, batch_size=1
             else:
                 print("------ No DDL queries to execute")
             if ingest_list:
-                print("------ Executing DML queries. {0} sources provided for ingestion, batch size = {1}"
-                      .format(len(ingest_list), batch_size))
+                print("------ Executing DML queries. {0} sources provided for ingestion"
+                      .format(len(ingest_list)))
                 for source in ingest_list:
                     db_insert_json(conn, cur, source['file_path'], source['target_table'], batch_size=batch_size)
 
