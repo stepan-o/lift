@@ -1,6 +1,7 @@
 import os
 from glob import glob
 from db.postgres_db_setup import *
+from db.source_file_list import source_file_list
 
 conn_params = {'host': 'localhost',
                'port': '5432',
@@ -24,15 +25,7 @@ for dml_file in dml_file_list:
     with open(dml_file, 'r') as f:
         dml_query_list.append(f.read())
 
-# set file paths, generate ingestion list
-data_path = os.path.join('data', 'yelp_dataset')
-business_path = os.path.join(data_path, 'business.json')
-user_path = os.path.join(data_path, 'user.json')
-review_path = os.path.join(data_path, 'review.json')
-ingest_business = {'file_path': business_path, 'target_table': 'business'}
-ingest_user = {'file_path': user_path, 'target_table': 'yelp_user'}
-ingest_review = {'file_path': review_path, 'target_table': 'review'}
-ing_list = [ingest_business, ingest_user, ingest_review]
+ing_list = source_file_list()
 
 # set up database
 db_setup(conn_params, ddl_queries=ddl_query_list, ingest_list=ing_list)
