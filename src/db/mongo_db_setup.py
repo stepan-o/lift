@@ -38,3 +38,26 @@ def json_to_mongo(db, collection_name, json_path):
         print("Data inserted, took {0:,.2f} seconds ({1:,.2f} minutes)"
               .format(elapsed, elapsed / 60))
     return collection
+
+
+def mongo_index(db, idx_dict):
+    print("-- Creating index on the field '{0}' of collection '{1}', index type {2}"
+          .format(idx_dict['idx_col_name'], idx_dict['cole_name'], idx_dict['type']))
+    t = time()
+    try:
+        try:
+            db[idx_dict['cole_name']].drop_index("{0}_{1}"
+                                                 .format(idx_dict['idx_col_name'], idx_dict['type']))
+            print("Old index dropped, creating new index...")
+        except pymongo.errors.OperationFailure as err:
+            print("{0}, creating new index...".format(err))
+            pass
+        db[idx_dict['cole_name']].create_index([
+            (idx_dict['idx_col_name'], idx_dict['type'])
+        ])
+        elapsed = time() - t
+        print("Index created, took {0:,.2f} seconds ({1:,.2f} minutes)\n"
+              .format(elapsed, elapsed / 60))
+
+    except pymongo.errors.OperationFailure as err:
+        print("\n\n{0} Error when creating index\n{1}\n".format('-' * 15, err))
