@@ -4,7 +4,7 @@ SELECT
 FROM (
          SELECT
              regexp_split_to_table(r.text, '\s') as word
-         FROM review_cleaned AS r
+         FROM review AS r
                   JOIN business b on r.business_id = b.business_id
          WHERE b.name='Chipotle Mexican Grill'
      ) t
