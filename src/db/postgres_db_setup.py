@@ -7,6 +7,46 @@ from time import time
 pd.set_option('display.max_columns', 500)
 
 
+def db_setup(connection_params, ddl_queries=None, ingest_list=None, dml_queries=None):
+    print("------ Connecting to database '{0}'...".format(connection_params['database']))
+    tt = time()
+    with psycopg2.connect(**connection_params) as conn:
+        with conn.cursor() as cur:
+            conn.autocommit = False
+            db_check_connection(conn, cur)
+            batch_size = int(input("Specify batch size (integer) for JSON INSERT : "))
+            if ddl_queries:
+                print("------ Executing DDL queries")
+                db_execute_queries(conn, cur, ddl_queries)
+                print("All DDL queries executed\n")
+            else:
+                print("------ No DDL queries to execute")
+            if ingest_list:
+                print("------ Ingesting data. {0} sources provided for ingestion"
+                      .format(len(ingest_list)))
+                for source in ingest_list:
+                    db_insert_json(conn, cur, source['file_path'], source['target_table'], batch_size=batch_size)
+            else:
+                print("------ No data sources provided to ingest")
+            if dml_queries:
+                print("------ Executing DML queries")
+                db_execute_queries(conn, cur, dml_queries)
+                print("All DML queries executed\n")
+            else:
+                print("------ No DML queries to execute\n")
+
+    print("------ Database setup finished, closing connection to the database")
+    # close connection to the database
+    if cur:
+        cur.close()
+    if conn:
+        conn.close()
+    t_elapsed = time() - tt
+    print("--- Database connection closed, total time {0:,.2f} seconds ({1:,.2f} minutes)."
+          .format(t_elapsed, t_elapsed / 60))
+    return
+
+
 def db_check_connection(conn, cur):
     try:
         # display PostgreSQL connection properties
@@ -56,30 +96,6 @@ def db_execute_queries(conn, cur, queries, verbose=False):
     except (Exception, Error, DatabaseError) as ddl_error:
         # in case of an error, roll back changes
         print("\n{0} Error while executing query:\n{1}".format('-' * 15, ddl_error))
-        print("------ Reverting changes from the transaction...")
-        conn.rollback()
-        print("{0} Changes rolled back\n".format('-' * 15))
-
-
-def db_copy_from(conn, cur, file_path, target_table, header=True, sep=',', null='\\N'):
-    try:
-        # copy data from file into the table
-        print("-- Copying data into '{0}' table from file {1}...".format(target_table, file_path))
-        t = time()
-        with open(file_path, 'r') as f_in:
-            if header:
-                next(f_in)
-            cur.copy_from(f_in, target_table, sep=sep, null=null)
-        elapsed = time() - t
-        # persist changes to the database
-        print("Data copied, took {0:,.2f} seconds ({1:,.2f} minutes, persisting changes to the database..."
-              .format(elapsed, elapsed / 60))
-        conn.commit()
-        print("{0} Changes persisted\n".format('-' * 15))
-
-    except (Exception, Error, DatabaseError) as copy_error:
-        # in case of an error, roll back changes
-        print("\n{0} Error while executing query:\n{1}".format('-' * 15, copy_error))
         print("------ Reverting changes from the transaction...")
         conn.rollback()
         print("{0} Changes rolled back\n".format('-' * 15))
@@ -137,32 +153,25 @@ def db_insert_json(conn, cur, json_path, target_table, batch_size):
         print("{0} Changes rolled back\n".format('-' * 15))
 
 
-def db_setup(connection_params, ddl_queries=None, ingest_list=None):
-    print("------ Connecting to database '{0}'...".format(connection_params['database']))
-    tt = time()
-    with psycopg2.connect(**connection_params) as conn:
-        with conn.cursor() as cur:
-            conn.autocommit = False
-            db_check_connection(conn, cur)
-            batch_size = int(input("Specify batch size (integer) for json INSERT : "))
-            if ddl_queries:
-                print("------ Executing DDL queries")
-                db_execute_queries(conn, cur, ddl_queries)
-                print("All DDL queries executed\n")
-            else:
-                print("------ No DDL queries to execute")
-            if ingest_list:
-                print("------ Executing DML queries. {0} sources provided for ingestion"
-                      .format(len(ingest_list)))
-                for source in ingest_list:
-                    db_insert_json(conn, cur, source['file_path'], source['target_table'], batch_size=batch_size)
+def db_copy_from(conn, cur, file_path, target_table, header=True, sep=',', null='\\N'):
+    try:
+        # copy data from file into the table
+        print("-- Copying data into '{0}' table from file {1}...".format(target_table, file_path))
+        t = time()
+        with open(file_path, 'r') as f_in:
+            if header:
+                next(f_in)
+            cur.copy_from(f_in, target_table, sep=sep, null=null)
+        elapsed = time() - t
+        # persist changes to the database
+        print("Data copied, took {0:,.2f} seconds ({1:,.2f} minutes, persisting changes to the database..."
+              .format(elapsed, elapsed / 60))
+        conn.commit()
+        print("{0} Changes persisted\n".format('-' * 15))
 
-    # close connection to the database
-    if cur:
-        cur.close()
-    if conn:
-        conn.close()
-    t_elapsed = time() - tt
-    print("--- Database connection closed, total time {0:,.2f} seconds ({1:,.2f} minutes)."
-          .format(t_elapsed, t_elapsed / 60))
-    return
+    except (Exception, Error, DatabaseError) as copy_error:
+        # in case of an error, roll back changes
+        print("\n{0} Error while executing query:\n{1}".format('-' * 15, copy_error))
+        print("------ Reverting changes from the transaction...")
+        conn.rollback()
+        print("{0} Changes rolled back\n".format('-' * 15))
