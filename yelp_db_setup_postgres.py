@@ -1,7 +1,7 @@
 import os
 from glob import glob
-from db.postgres_db_setup import *
-from db.source_file_list import get_source_file_list
+from src.db.postgres_db_setup import *
+from src.db.source_file_list import get_source_file_list
 
 conn_params = {'host': 'localhost',
                'port': '5432',
