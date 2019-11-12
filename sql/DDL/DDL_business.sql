@@ -1,5 +1,5 @@
 drop table if exists business;
--- auto-generated definition
+
 create table business
 (
     "attributes.Alcohol"                    text,

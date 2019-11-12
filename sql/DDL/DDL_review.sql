@@ -1,5 +1,5 @@
 drop table if exists review;
--- auto-generated definition
+
 create table review
 (
     stars       numeric,

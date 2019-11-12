@@ -1,5 +1,5 @@
 drop table if exists yelp_user;
--- auto-generated definition
+
 create table yelp_user
 (
     fans               integer,
