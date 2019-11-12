@@ -14,7 +14,6 @@ def db_setup(connection_params, ddl_queries=None, ingest_list=None, dml_queries=
         with conn.cursor() as cur:
             conn.autocommit = False
             db_check_connection(conn, cur)
-            batch_size = int(input("Specify batch size (integer) for JSON INSERT : "))
             if ddl_queries:
                 print("------ Executing DDL queries")
                 db_execute_queries(conn, cur, ddl_queries)
@@ -25,7 +24,7 @@ def db_setup(connection_params, ddl_queries=None, ingest_list=None, dml_queries=
                 print("------ Ingesting data. {0} sources provided for ingestion"
                       .format(len(ingest_list)))
                 for source in ingest_list:
-                    db_insert_json(conn, cur, source['file_path'], source['target_table'], batch_size=batch_size)
+                    db_insert_json(conn, cur, source['file_path'], source['target_table'])
             else:
                 print("------ No data sources provided to ingest")
             if dml_queries:
@@ -81,7 +80,7 @@ def db_execute_queries(conn, cur, queries, verbose=False):
             if verbose:
                 print("-- Executing query {0}:\n{1}".format(query_count, query))
             else:
-                print("-- Executing query {0}: {1}...".format(query_count, query[:30]))
+                print("-- Executing query {0}: {1}...".format(query_count, query[:100]))
             t = time()
             cur.execute(query)
             elapsed = time() - t
@@ -96,21 +95,20 @@ def db_execute_queries(conn, cur, queries, verbose=False):
     except (Exception, Error, DatabaseError) as ddl_error:
         # in case of an error, roll back changes
         print("\n{0} Error while executing query:\n{1}".format('-' * 15, ddl_error))
-        print("------ Reverting changes from the transaction...")
+        print("------ Reverting changes from the last transaction...")
         conn.rollback()
         print("{0} Changes rolled back\n".format('-' * 15))
 
 
-def db_insert_json(conn, cur, json_path, target_table, batch_size):
+def db_insert_json(conn, cur, json_path, target_table):
     try:
         # copy data from file into the table
-        print("-- Insert data into '{0}' table from file {1}, batch size = {2:,}..."
-              .format(target_table, json_path, batch_size))
+        print("-- Insert data into '{0}' table from file {1}..."
+              .format(target_table, json_path))
         t = time()
         with open(json_path, 'r') as f_in:
             lines = f_in.readlines()
             row = 0
-            json_df = pd.DataFrame()
             for line in lines:
                 if row % 10000 == 0:
                     elpsd = time() - t
@@ -119,36 +117,32 @@ def db_insert_json(conn, cur, json_path, target_table, batch_size):
                 row += 1
                 line_json = json.loads(line)
                 line_df = json_normalize(line_json)
-                json_df = json_df.append(line_df, sort=True)
-                if len(json_df) == batch_size:
-                    json_df = json_df.fillna('NULL').replace('None', 'NULL')
-                    json_tuple = [tuple(x) for x in json_df.values]
-                    insert_query_string = 'INSERT INTO {0} ( '.format(target_table)
-                    i = 0
-                    for col in json_df.columns:
-                        if '.' in col:
-                            col = '"' + col + '"'
-                        insert_query_string = insert_query_string + col
-                        i += 1
-                        if i < len(json_df.columns):
-                            insert_query_string = insert_query_string + ', '
-                    insert_query_string = insert_query_string + ' ) VALUES ({0})'\
-                        .format(','.join(['%s'] * len(json_df.columns)))
-                    cur.executemany(insert_query_string, json_tuple)
-                    json_df = pd.DataFrame()
+                line_df = line_df.fillna('NULL').replace('None', 'NULL')
+                line_tuple = tuple(line_df.values)
+                insert_query_string = 'INSERT INTO {0} ( '.format(target_table)
+                i = 0
+                for col in line_df.columns:
+                    if '.' in col:
+                        col = '"' + col + '"'
+                    insert_query_string = insert_query_string + col
+                    i += 1
+                    if i < len(line_df.columns):
+                        insert_query_string = insert_query_string + ', '
+                insert_query_string = insert_query_string + ' ) VALUES ({0})'\
+                    .format(','.join(['%s'] * len(line_df.columns)))
+                cur.execute(insert_query_string, line_tuple[0])
 
         elapsed = time() - t
         # persist changes to the database
         print("Data inserted, took {0:,.2f} seconds ({1:,.2f} minutes, persisting changes to the database..."
               .format(elapsed, elapsed / 60))
         conn.commit()
-        count = cur.rowcount
-        print("{0} Changes persisted, {1} rows inserted\n".format('-' * 15, count))
+        print("{0} Changes persisted\n".format('-' * 15))
 
     except (Exception, Error, DatabaseError) as insert_error:
         # in case of an error, roll back changes
         print("\n{0} Error while executing query:\n{1}".format('-' * 15, insert_error))
-        print("------ Reverting changes from the transaction...")
+        print("------ Reverting changes from the last transaction...")
         conn.rollback()
         print("{0} Changes rolled back\n".format('-' * 15))
 
@@ -172,6 +166,6 @@ def db_copy_from(conn, cur, file_path, target_table, header=True, sep=',', null=
     except (Exception, Error, DatabaseError) as copy_error:
         # in case of an error, roll back changes
         print("\n{0} Error while executing query:\n{1}".format('-' * 15, copy_error))
-        print("------ Reverting changes from the transaction...")
+        print("------ Reverting changes from the last transaction...")
         conn.rollback()
         print("{0} Changes rolled back\n".format('-' * 15))
