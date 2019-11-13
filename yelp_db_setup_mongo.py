@@ -1,7 +1,7 @@
 # script to setup MongoDB database for Yelp dataset, ingest data, and create indices
 
-from db.mongo_db_setup import *
-from db.source_file_list import *
+from src.db.mongo_db_setup import *
+from src.db.source_file_list import *
 import os
 
 
