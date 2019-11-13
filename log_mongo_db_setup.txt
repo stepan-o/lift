@@ -1,0 +1,284 @@
+stepan@hp-envy:~$ cd repos/lift
+stepan@hp-envy:~/repos/lift$ conda activate lift
+(lift) stepan@hp-envy:~/repos/lift$ python yelp_db_setup_mongo.py 
+------ Connecting to MongoDB database
+Connected, displaying server information:
+{'version': '4.2.1', 'gitVersion': 'edf6d45851c0b9ee15548f0f847df141764a317e', 'modules': [], 'allocator': 'tcmalloc', 'javascriptEngine': 'mozjs', 'sysInfo': 'deprecated', 'versionArray': [4, 2, 1, 0], 'openssl': {'running': 'OpenSSL 1.1.1  11 Sep 2018', 'compiled': 'OpenSSL 1.1.1  11 Sep 2018'}, 'buildEnvironment': {'distmod': 'ubuntu1804', 'distarch': 'x86_64', 'cc': '/opt/mongodbtoolchain/v3/bin/gcc: gcc (GCC) 8.2.0', 'ccflags': '-fno-omit-frame-pointer -fno-strict-aliasing -ggdb -pthread -Wall -Wsign-compare -Wno-unknown-pragmas -Winvalid-pch -Werror -O2 -Wno-unused-local-typedefs -Wno-unused-function -Wno-deprecated-declarations -Wno-unused-const-variable -Wno-unused-but-set-variable -Wno-missing-braces -fstack-protector-strong -fno-builtin-memcmp', 'cxx': '/opt/mongodbtoolchain/v3/bin/g++: g++ (GCC) 8.2.0', 'cxxflags': '-Woverloaded-virtual -Wno-maybe-uninitialized -fsized-deallocation -std=c++17', 'linkflags': '-pthread -Wl,-z,now -rdynamic -Wl,--fatal-warnings -fstack-protector-strong -fuse-ld=gold -Wl,--build-id -Wl,--hash-style=gnu -Wl,-z,noexecstack -Wl,--warn-execstack -Wl,-z,relro', 'target_arch': 'x86_64', 'target_os': 'linux'}, 'bits': 64, 'debug': False, 'maxBsonObjectSize': 16777216, 'storageEngines': ['biggie', 'devnull', 'ephemeralForTest', 'wiredTiger'], 'ok': 1.0}
+
+-- database names:
+['admin', 'config', 'local', 'yelp']
+
+Getting database 'yelp'
+Collection names:
+['yelp_user', 'review', 'business']
+------ Ingesting data
+
+------ Inserting data into collection 'business' from file 'data/yelp_dataset/business.json'
+Inserted 0 rows, so far took 1.58 seconds (0.03 minutes)
+Inserted 50,000 rows, so far took 18.34 seconds (0.31 minutes)
+Inserted 100,000 rows, so far took 34.31 seconds (0.57 minutes)
+Inserted 150,000 rows, so far took 50.32 seconds (0.84 minutes)
+Data inserted, took 63.85 seconds (1.06 minutes)
+
+------ Inserting data into collection 'yelp_user' from file 'data/yelp_dataset/user.json'
+Inserted 0 rows, so far took 28.70 seconds (0.48 minutes)
+Inserted 50,000 rows, so far took 47.84 seconds (0.80 minutes)
+Inserted 100,000 rows, so far took 63.43 seconds (1.06 minutes)
+Inserted 150,000 rows, so far took 78.88 seconds (1.31 minutes)
+Inserted 200,000 rows, so far took 95.25 seconds (1.59 minutes)
+Inserted 250,000 rows, so far took 112.28 seconds (1.87 minutes)
+Inserted 300,000 rows, so far took 127.80 seconds (2.13 minutes)
+Inserted 350,000 rows, so far took 143.90 seconds (2.40 minutes)
+Inserted 400,000 rows, so far took 159.86 seconds (2.66 minutes)
+Inserted 450,000 rows, so far took 176.09 seconds (2.93 minutes)
+Inserted 500,000 rows, so far took 191.80 seconds (3.20 minutes)
+Inserted 550,000 rows, so far took 207.98 seconds (3.47 minutes)
+Inserted 600,000 rows, so far took 223.70 seconds (3.73 minutes)
+Inserted 650,000 rows, so far took 239.80 seconds (4.00 minutes)
+Inserted 700,000 rows, so far took 256.18 seconds (4.27 minutes)
+Inserted 750,000 rows, so far took 271.84 seconds (4.53 minutes)
+Inserted 800,000 rows, so far took 287.28 seconds (4.79 minutes)
+Inserted 850,000 rows, so far took 303.96 seconds (5.07 minutes)
+Inserted 900,000 rows, so far took 319.71 seconds (5.33 minutes)
+Inserted 950,000 rows, so far took 335.92 seconds (5.60 minutes)
+Inserted 1,000,000 rows, so far took 352.30 seconds (5.87 minutes)
+Inserted 1,050,000 rows, so far took 369.36 seconds (6.16 minutes)
+Inserted 1,100,000 rows, so far took 384.86 seconds (6.41 minutes)
+Inserted 1,150,000 rows, so far took 400.48 seconds (6.67 minutes)
+Inserted 1,200,000 rows, so far took 416.66 seconds (6.94 minutes)
+Inserted 1,250,000 rows, so far took 433.16 seconds (7.22 minutes)
+Inserted 1,300,000 rows, so far took 448.66 seconds (7.48 minutes)
+Inserted 1,350,000 rows, so far took 464.85 seconds (7.75 minutes)
+Inserted 1,400,000 rows, so far took 480.66 seconds (8.01 minutes)
+Inserted 1,450,000 rows, so far took 496.31 seconds (8.27 minutes)
+Inserted 1,500,000 rows, so far took 512.21 seconds (8.54 minutes)
+Inserted 1,550,000 rows, so far took 528.05 seconds (8.80 minutes)
+Inserted 1,600,000 rows, so far took 543.59 seconds (9.06 minutes)
+Data inserted, took 555.40 seconds (9.26 minutes)
+
+------ Inserting data into collection 'review' from file 'data/yelp_dataset/review.json'
+Inserted 0 rows, so far took 60.60 seconds (1.01 minutes)
+Inserted 50,000 rows, so far took 75.58 seconds (1.26 minutes)
+Inserted 100,000 rows, so far took 91.64 seconds (1.53 minutes)
+Inserted 150,000 rows, so far took 107.68 seconds (1.79 minutes)
+Inserted 200,000 rows, so far took 122.76 seconds (2.05 minutes)
+Inserted 250,000 rows, so far took 137.69 seconds (2.29 minutes)
+Inserted 300,000 rows, so far took 152.79 seconds (2.55 minutes)
+Inserted 350,000 rows, so far took 167.69 seconds (2.79 minutes)
+Inserted 400,000 rows, so far took 182.54 seconds (3.04 minutes)
+Inserted 450,000 rows, so far took 197.76 seconds (3.30 minutes)
+Inserted 500,000 rows, so far took 212.91 seconds (3.55 minutes)
+Inserted 550,000 rows, so far took 228.05 seconds (3.80 minutes)
+Inserted 600,000 rows, so far took 243.28 seconds (4.05 minutes)
+Inserted 650,000 rows, so far took 258.62 seconds (4.31 minutes)
+Inserted 700,000 rows, so far took 273.56 seconds (4.56 minutes)
+Inserted 750,000 rows, so far took 288.62 seconds (4.81 minutes)
+Inserted 800,000 rows, so far took 303.65 seconds (5.06 minutes)
+Inserted 850,000 rows, so far took 318.92 seconds (5.32 minutes)
+Inserted 900,000 rows, so far took 333.83 seconds (5.56 minutes)
+Inserted 950,000 rows, so far took 348.83 seconds (5.81 minutes)
+Inserted 1,000,000 rows, so far took 363.79 seconds (6.06 minutes)
+Inserted 1,050,000 rows, so far took 378.96 seconds (6.32 minutes)
+Inserted 1,100,000 rows, so far took 393.82 seconds (6.56 minutes)
+Inserted 1,150,000 rows, so far took 408.74 seconds (6.81 minutes)
+Inserted 1,200,000 rows, so far took 423.74 seconds (7.06 minutes)
+Inserted 1,250,000 rows, so far took 439.16 seconds (7.32 minutes)
+Inserted 1,300,000 rows, so far took 454.15 seconds (7.57 minutes)
+Inserted 1,350,000 rows, so far took 469.15 seconds (7.82 minutes)
+Inserted 1,400,000 rows, so far took 484.02 seconds (8.07 minutes)
+Inserted 1,450,000 rows, so far took 499.19 seconds (8.32 minutes)
+Inserted 1,500,000 rows, so far took 514.22 seconds (8.57 minutes)
+Inserted 1,550,000 rows, so far took 529.11 seconds (8.82 minutes)
+Inserted 1,600,000 rows, so far took 543.93 seconds (9.07 minutes)
+Inserted 1,650,000 rows, so far took 558.92 seconds (9.32 minutes)
+Inserted 1,700,000 rows, so far took 574.17 seconds (9.57 minutes)
+Inserted 1,750,000 rows, so far took 589.05 seconds (9.82 minutes)
+Inserted 1,800,000 rows, so far took 604.00 seconds (10.07 minutes)
+Inserted 1,850,000 rows, so far took 618.92 seconds (10.32 minutes)
+Inserted 1,900,000 rows, so far took 637.57 seconds (10.63 minutes)
+Inserted 1,950,000 rows, so far took 652.70 seconds (10.88 minutes)
+Inserted 2,000,000 rows, so far took 667.55 seconds (11.13 minutes)
+Inserted 2,050,000 rows, so far took 682.43 seconds (11.37 minutes)
+Inserted 2,100,000 rows, so far took 699.69 seconds (11.66 minutes)
+Inserted 2,150,000 rows, so far took 714.47 seconds (11.91 minutes)
+Inserted 2,200,000 rows, so far took 729.26 seconds (12.15 minutes)
+Inserted 2,250,000 rows, so far took 744.10 seconds (12.40 minutes)
+Inserted 2,300,000 rows, so far took 759.22 seconds (12.65 minutes)
+Inserted 2,350,000 rows, so far took 774.06 seconds (12.90 minutes)
+Inserted 2,400,000 rows, so far took 788.72 seconds (13.15 minutes)
+Inserted 2,450,000 rows, so far took 803.58 seconds (13.39 minutes)
+Inserted 2,500,000 rows, so far took 820.30 seconds (13.67 minutes)
+Inserted 2,550,000 rows, so far took 838.08 seconds (13.97 minutes)
+Inserted 2,600,000 rows, so far took 853.11 seconds (14.22 minutes)
+Inserted 2,650,000 rows, so far took 867.96 seconds (14.47 minutes)
+Inserted 2,700,000 rows, so far took 883.47 seconds (14.72 minutes)
+Inserted 2,750,000 rows, so far took 898.20 seconds (14.97 minutes)
+Inserted 2,800,000 rows, so far took 912.96 seconds (15.22 minutes)
+Inserted 2,850,000 rows, so far took 927.70 seconds (15.46 minutes)
+Inserted 2,900,000 rows, so far took 942.61 seconds (15.71 minutes)
+Inserted 2,950,000 rows, so far took 957.96 seconds (15.97 minutes)
+Inserted 3,000,000 rows, so far took 972.87 seconds (16.21 minutes)
+Inserted 3,050,000 rows, so far took 987.70 seconds (16.46 minutes)
+Inserted 3,100,000 rows, so far took 1,002.58 seconds (16.71 minutes)
+Inserted 3,150,000 rows, so far took 1,018.71 seconds (16.98 minutes)
+Inserted 3,200,000 rows, so far took 1,033.92 seconds (17.23 minutes)
+Inserted 3,250,000 rows, so far took 1,048.66 seconds (17.48 minutes)
+Inserted 3,300,000 rows, so far took 1,063.42 seconds (17.72 minutes)
+Inserted 3,350,000 rows, so far took 1,078.63 seconds (17.98 minutes)
+Inserted 3,400,000 rows, so far took 1,094.22 seconds (18.24 minutes)
+Inserted 3,450,000 rows, so far took 1,109.26 seconds (18.49 minutes)
+Inserted 3,500,000 rows, so far took 1,124.02 seconds (18.73 minutes)
+Inserted 3,550,000 rows, so far took 1,139.08 seconds (18.98 minutes)
+Inserted 3,600,000 rows, so far took 1,153.70 seconds (19.23 minutes)
+Inserted 3,650,000 rows, so far took 1,168.37 seconds (19.47 minutes)
+Inserted 3,700,000 rows, so far took 1,183.01 seconds (19.72 minutes)
+Inserted 3,750,000 rows, so far took 1,197.97 seconds (19.97 minutes)
+Inserted 3,800,000 rows, so far took 1,213.05 seconds (20.22 minutes)
+Inserted 3,850,000 rows, so far took 1,227.86 seconds (20.46 minutes)
+Inserted 3,900,000 rows, so far took 1,242.69 seconds (20.71 minutes)
+Inserted 3,950,000 rows, so far took 1,257.31 seconds (20.96 minutes)
+Inserted 4,000,000 rows, so far took 1,272.87 seconds (21.21 minutes)
+Inserted 4,050,000 rows, so far took 1,287.61 seconds (21.46 minutes)
+Inserted 4,100,000 rows, so far took 1,302.27 seconds (21.70 minutes)
+Inserted 4,150,000 rows, so far took 1,317.05 seconds (21.95 minutes)
+Inserted 4,200,000 rows, so far took 1,332.53 seconds (22.21 minutes)
+Inserted 4,250,000 rows, so far took 1,347.29 seconds (22.45 minutes)
+Inserted 4,300,000 rows, so far took 1,362.06 seconds (22.70 minutes)
+Inserted 4,350,000 rows, so far took 1,376.77 seconds (22.95 minutes)
+Inserted 4,400,000 rows, so far took 1,391.96 seconds (23.20 minutes)
+Inserted 4,450,000 rows, so far took 1,406.74 seconds (23.45 minutes)
+Inserted 4,500,000 rows, so far took 1,421.37 seconds (23.69 minutes)
+Inserted 4,550,000 rows, so far took 1,436.49 seconds (23.94 minutes)
+Inserted 4,600,000 rows, so far took 1,452.81 seconds (24.21 minutes)
+Inserted 4,650,000 rows, so far took 1,467.89 seconds (24.46 minutes)
+Inserted 4,700,000 rows, so far took 1,482.81 seconds (24.71 minutes)
+Inserted 4,750,000 rows, so far took 1,497.64 seconds (24.96 minutes)
+Inserted 4,800,000 rows, so far took 1,512.60 seconds (25.21 minutes)
+Inserted 4,850,000 rows, so far took 1,527.81 seconds (25.46 minutes)
+Inserted 4,900,000 rows, so far took 1,542.72 seconds (25.71 minutes)
+Inserted 4,950,000 rows, so far took 1,557.57 seconds (25.96 minutes)
+Inserted 5,000,000 rows, so far took 1,572.56 seconds (26.21 minutes)
+Inserted 5,050,000 rows, so far took 1,587.75 seconds (26.46 minutes)
+Inserted 5,100,000 rows, so far took 1,602.41 seconds (26.71 minutes)
+Inserted 5,150,000 rows, so far took 1,617.24 seconds (26.95 minutes)
+Inserted 5,200,000 rows, so far took 1,632.14 seconds (27.20 minutes)
+Inserted 5,250,000 rows, so far took 1,647.32 seconds (27.46 minutes)
+Inserted 5,300,000 rows, so far took 1,662.21 seconds (27.70 minutes)
+Inserted 5,350,000 rows, so far took 1,677.02 seconds (27.95 minutes)
+Inserted 5,400,000 rows, so far took 1,691.81 seconds (28.20 minutes)
+Inserted 5,450,000 rows, so far took 1,706.97 seconds (28.45 minutes)
+Inserted 5,500,000 rows, so far took 1,721.76 seconds (28.70 minutes)
+Inserted 5,550,000 rows, so far took 1,736.77 seconds (28.95 minutes)
+Inserted 5,600,000 rows, so far took 1,753.07 seconds (29.22 minutes)
+Inserted 5,650,000 rows, so far took 1,768.53 seconds (29.48 minutes)
+Inserted 5,700,000 rows, so far took 1,783.33 seconds (29.72 minutes)
+Inserted 5,750,000 rows, so far took 1,798.13 seconds (29.97 minutes)
+Inserted 5,800,000 rows, so far took 1,812.98 seconds (30.22 minutes)
+Inserted 5,850,000 rows, so far took 1,828.03 seconds (30.47 minutes)
+Inserted 5,900,000 rows, so far took 1,842.73 seconds (30.71 minutes)
+Inserted 5,950,000 rows, so far took 1,857.44 seconds (30.96 minutes)
+Inserted 6,000,000 rows, so far took 1,872.26 seconds (31.20 minutes)
+Inserted 6,050,000 rows, so far took 1,887.01 seconds (31.45 minutes)
+Inserted 6,100,000 rows, so far took 1,902.21 seconds (31.70 minutes)
+Inserted 6,150,000 rows, so far took 1,917.11 seconds (31.95 minutes)
+Inserted 6,200,000 rows, so far took 1,931.91 seconds (32.20 minutes)
+Inserted 6,250,000 rows, so far took 1,946.54 seconds (32.44 minutes)
+Inserted 6,300,000 rows, so far took 1,962.11 seconds (32.70 minutes)
+Inserted 6,350,000 rows, so far took 1,976.90 seconds (32.95 minutes)
+Inserted 6,400,000 rows, so far took 1,991.51 seconds (33.19 minutes)
+Inserted 6,450,000 rows, so far took 2,006.23 seconds (33.44 minutes)
+Inserted 6,500,000 rows, so far took 2,021.07 seconds (33.68 minutes)
+Inserted 6,550,000 rows, so far took 2,035.81 seconds (33.93 minutes)
+Inserted 6,600,000 rows, so far took 2,050.72 seconds (34.18 minutes)
+Inserted 6,650,000 rows, so far took 2,066.58 seconds (34.44 minutes)
+Data inserted, took 2,077.44 seconds (34.62 minutes)
+
+------ Inserting data into collection 'checkin' from file 'data/yelp_dataset/checkin.json'
+Inserted 0 rows, so far took 4.74 seconds (0.08 minutes)
+Inserted 50,000 rows, so far took 20.07 seconds (0.33 minutes)
+Inserted 100,000 rows, so far took 34.97 seconds (0.58 minutes)
+Inserted 150,000 rows, so far took 50.66 seconds (0.84 minutes)
+Data inserted, took 54.20 seconds (0.90 minutes)
+
+------ Inserting data into collection 'tip' from file 'data/yelp_dataset/tip.json'
+Inserted 0 rows, so far took 3.06 seconds (0.05 minutes)
+Inserted 50,000 rows, so far took 17.37 seconds (0.29 minutes)
+Inserted 100,000 rows, so far took 31.41 seconds (0.52 minutes)
+Inserted 150,000 rows, so far took 45.52 seconds (0.76 minutes)
+Inserted 200,000 rows, so far took 59.74 seconds (1.00 minutes)
+Inserted 250,000 rows, so far took 73.87 seconds (1.23 minutes)
+Inserted 300,000 rows, so far took 87.90 seconds (1.47 minutes)
+Inserted 350,000 rows, so far took 102.00 seconds (1.70 minutes)
+Inserted 400,000 rows, so far took 115.89 seconds (1.93 minutes)
+Inserted 450,000 rows, so far took 129.99 seconds (2.17 minutes)
+Inserted 500,000 rows, so far took 144.07 seconds (2.40 minutes)
+Inserted 550,000 rows, so far took 158.18 seconds (2.64 minutes)
+Inserted 600,000 rows, so far took 172.19 seconds (2.87 minutes)
+Inserted 650,000 rows, so far took 186.29 seconds (3.10 minutes)
+Inserted 700,000 rows, so far took 200.32 seconds (3.34 minutes)
+Inserted 750,000 rows, so far took 214.41 seconds (3.57 minutes)
+Inserted 800,000 rows, so far took 228.60 seconds (3.81 minutes)
+Inserted 850,000 rows, so far took 242.82 seconds (4.05 minutes)
+Inserted 900,000 rows, so far took 256.81 seconds (4.28 minutes)
+Inserted 950,000 rows, so far took 270.87 seconds (4.51 minutes)
+Inserted 1,000,000 rows, so far took 284.89 seconds (4.75 minutes)
+Inserted 1,050,000 rows, so far took 298.85 seconds (4.98 minutes)
+Inserted 1,100,000 rows, so far took 313.10 seconds (5.22 minutes)
+Inserted 1,150,000 rows, so far took 327.20 seconds (5.45 minutes)
+Inserted 1,200,000 rows, so far took 341.29 seconds (5.69 minutes)
+Data inserted, took 347.79 seconds (5.80 minutes)
+
+------ Setting up indexes
+-- Creating index on the field 'business_id' of collection 'business', index type -1
+index not found with name [business_id_-1], creating new index...
+Index created, took 1.71 seconds (0.03 minutes)
+
+-- Creating index on the field 'stars' of collection 'business', index type -1
+index not found with name [stars_-1], creating new index...
+Index created, took 0.80 seconds (0.01 minutes)
+
+-- Creating index on the field 'review_count' of collection 'business', index type -1
+index not found with name [review_count_-1], creating new index...
+Index created, took 0.71 seconds (0.01 minutes)
+
+-- Creating index on the field 'state' of collection 'business', index type text
+index not found with name [state_text], creating new index...
+Index created, took 1.12 seconds (0.02 minutes)
+
+-- Creating index on the field 'city' of collection 'business', index type -1
+index not found with name [city_-1], creating new index...
+Index created, took 0.75 seconds (0.01 minutes)
+
+-- Creating index on the field 'review_id' of collection 'review', index type -1
+index not found with name [review_id_-1], creating new index...
+Index created, took 73.10 seconds (1.22 minutes)
+
+-- Creating index on the field 'business_id' of collection 'review', index type -1
+index not found with name [business_id_-1], creating new index...
+Index created, took 141.81 seconds (2.36 minutes)
+
+-- Creating index on the field 'user_id' of collection 'review', index type -1
+index not found with name [user_id_-1], creating new index...
+Index created, took 121.71 seconds (2.03 minutes)
+
+-- Creating index on the field 'text' of collection 'review', index type text
+index not found with name [text_text], creating new index...
+Index created, took 1,399.46 seconds (23.32 minutes)
+
+-- Creating index on the field 'business_id' of collection 'checkin', index type -1
+index not found with name [business_id_-1], creating new index...
+Index created, took 6.34 seconds (0.11 minutes)
+
+-- Creating index on the field 'business_id' of collection 'tips', index type -1
+Old index dropped, creating new index...
+Index created, took 0.53 seconds (0.01 minutes)
+
+-- Creating index on the field 'user_id' of collection 'tips', index type -1
+index not found with name [user_id_-1], creating new index...
+Index created, took 0.25 seconds (0.00 minutes)
+
+------ All indexes have been created
+
+------ Closing connection to database
+(lift) stepan@hp-envy:~/repos/lift$ 
+
