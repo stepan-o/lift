@@ -64,6 +64,21 @@ def get_idx_dict_list():
             "cole_name": "review",
             "idx_col_name": "text",
             "type": pymongo.TEXT
+        },
+        {
+            "cole_name": "checkin",
+            "idx_col_name": "business_id",
+            "type": pymongo.DESCENDING
+        },
+        {
+            "cole_name": "tip",
+            "idx_col_name": "business_id",
+            "type": pymongo.DESCENDING
+        },
+        {
+            "cole_name": "tip",
+            "idx_col_name": "user_id",
+            "type": pymongo.DESCENDING
         }
     ]
     return idx_dict_list
