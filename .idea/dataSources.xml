@@ -7,12 +7,6 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/yelp</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="yelp@r-710" uuid="2c1b4106-1f4e-4cf4-b8c4-9835c4a6080a">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/yelp</jdbc-url>
-    </data-source>
     <data-source source="LOCAL" name="yelp@r-710-remote" uuid="be746001-cc20-47e0-8826-ebebc292829c">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
